@@ -1,0 +1,21 @@
+{
+  "name": "rr_express",
+  "version": "0.0.1",
+  "description": "rr demo built on express",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jack Frate",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.3",
+    "jshint": "^2.9.5",
+    "mongoose": "^5.2.1",
+    "node-pre-gyp": "^0.10.2",
+    "nodemon": "^1.17.5"
+  }
+}

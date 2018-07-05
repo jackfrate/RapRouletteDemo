@@ -1,0 +1,8 @@
+HTTP Verb	  Operation
+GET	          Read
+POST	      Create
+PUT	          Update
+DELETE	      Delete
+
+Make the http method for signing in
+also remember to start up the mongo server ( command window on left dtop)
