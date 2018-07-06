@@ -1,15 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=He, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>RR HOME PAGE</title>
+    <title>Welcome To Rap Roulette!</title>
 </head>
 
 <body>
-    will have options to : sign up, log in, and spectate
+
+    <div class="welcome">
+        <h1>Welcome to Rap Roulette Demo!</h1>
+        <h3>Please follow one of the links below</h3>
+    </div>
+
+    <div class="spectate_button">
+        <form method="post" action="/spectate/list">
+            <br>
+            <input type="submit" value="Spectate List">
+        </form>
+    </div>
+
+    <div class="spectate_button">
+        <form method="post" action="/spectate">
+            <br>
+            <input type="submit" value="Spectate Random Match">
+        </form>
+    </div>
+
+    <div class="user_button">
+        <form method="get" action="/sign_up">
+            <br>
+            <input type="submit" value="Sign Up">
+        </form>
+    </div>
+
+    <div class="user_button">
+        <form method="get" action="/sign_in">
+            <br>
+            <input type="submit" value="Sign In">
+        </form>
+    </div>
 </body>
 
 </html>

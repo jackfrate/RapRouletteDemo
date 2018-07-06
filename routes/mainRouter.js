@@ -1,18 +1,71 @@
-/**
- * Routes to the root
- * I know its just to the main route but I wanted to keep them in a separate file
- * for cleaner code
- */
+// router for the root path (/)
 
 const express = require("express");
 const mainRouter = express.Router();
 const User = require("../model/userModel");
 
-// files are rendered from the views folder
+// session stuff
+var session = require('express-session');
+mainRouter.use(session({
+  cookieName: 'session',
+  secret: 'insecure_demo_secret',   // this will be updated, just bad for the demo
+  duration: 30 * 60 * 1000,
+  activeDuration: 5 * 60 * 1000,
+}));
+
+mainRouter.use(function (req, res, next) {
+  if (req.session && req.session.user) {
+    User.findOne({ email: req.session.user.email }, function (err, user) {
+      if (user) {
+        req.user = user;
+        delete req.user.password; // delete the password from the session
+        req.session.user = user;  //refresh the session value
+        res.locals.user = user;
+      }
+      // finishing processing the middleware and run the route
+      next();
+    });
+  } else {
+    next();
+  }
+});
 
 // main root for homepage
 mainRouter.get("/", (req, res, next) => {
-  res.render("index");
+  // TODO: if session take user to dashboard, if not make them sign in/sign up
+  if (req.session && req.session.user) { // Check if session exists
+    // lookup the user in the DB by pulling their email from the session
+    User.findOne({
+      username: req.session.user.username,
+      password: req.session.user.password
+    }, function (err, user) {
+      if (!user) {
+        // if the user isn't found in the DB, reset the session info and
+        // redirect the user to the login page
+        req.session.reset();
+        res.redirect('/index');
+      } else {
+        // expose the user to the template
+        res.locals.user = user;
+
+        // get the variabls for the dashboard page
+        var username = req.session.user.username;
+        var wins = req.session.user.wins;
+        var losses = req.session.user.losses;
+        var wl_ratio = (wins / losses); // win loss ratio
+
+        // render the dashboard page
+        res.render('dashboard', {
+          username: username,
+          wins: wins,
+          losses: losses,
+          wl_ratio: wl_ratio
+        });
+      }
+    });
+  } else {
+    res.redirect('/index');
+  }
 });
 
 // get route for sign up page
@@ -22,6 +75,10 @@ mainRouter.get("/sign_up", (req, res, next) => {
 
 // post route for sign up page
 mainRouter.post("/sign_up", (req, res, next) => {
+  /**
+   * doubles as showing the page and also sending the new user object
+   * TODO: make sure that the new user obj doesn't have the password sent back
+   */
   var newUser = new User(req.body);
   // set everything for the new user
   newUser.admin = false;
@@ -34,9 +91,12 @@ mainRouter.post("/sign_up", (req, res, next) => {
     .then(item => {
       console.log("new user " + newUser.username + " created");
       res.render("sign_up_success");
+      res.send(newUser);
     })
     .catch(err => {
+      res.render("sign_up_error");
       res.status(400).send("unable to save to database!");
+
     });
 });
 
@@ -45,8 +105,58 @@ mainRouter.get("/sign_in", (req, res, next) => {
   res.render("sign_in");
 });
 
-// method for signing in
-// SHOULD THIS return a json object or an html page? probably json
-// START BACK UP HERE
+// post route for signign in
+mainRouter.post('/sign_in', function (req, res, next) {
+  User.findOne({ username: req.body.username, password: req.body.password }, function (err, user) {
+    if (!user) {
+      res.render('sign_in_error', { error: 'Invalid email or password.' });
+    } else {
+      if (req.body.password === user.password) {
+        // sets a cookie with the user's info
+        req.session.user = user;
+        res.redirect('/dashboard');
+      } else {
+        res.render('sign_in_error', { error: 'Invalid email or password.' });
+      }
+    }
+  });
+});
+
+// get route for the user dashboard
+mainRouter.get('/dashboard', function (req, res) {
+  if (req.session && req.session.user) { // Check if session exists
+    // lookup the user in the DB by pulling their email from the session
+    User.findOne({
+      username: req.session.user.username,
+      password: req.session.user.password
+    }, function (err, user) {
+      if (!user) {
+        // if the user isn't found in the DB, reset the session info and
+        // redirect the user to the login page
+        req.session.reset();
+        res.redirect('/sign_in');
+      } else {
+        // expose the user to the template
+        res.locals.user = user;
+
+        // get the variabls for the dashboard page
+        var username = req.session.user.username;
+        var wins = req.session.user.wins;
+        var losses = req.session.user.losses;
+        var wl_ratio = (wins / losses); // win loss ratio
+
+        // render the dashboard page
+        res.render('dashboard', {
+          username: username,
+          wins: wins,
+          losses: losses,
+          wl_ratio: wl_ratio
+        });
+      }
+    });
+  } else {
+    res.redirect('/sign_in');
+  }
+});
 
 module.exports = mainRouter;

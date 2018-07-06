@@ -4,7 +4,7 @@ const express = require("express");
 const app = express();
 const port = 3000;
 
-// express stuff
+// express stuff with some view engine in there
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 
@@ -27,6 +27,6 @@ const mainRouter = require("./routes/mainRouter");
 app.use("/", mainRouter);
 
 // listen
-app.listen(port, function() {
-  console.log("RR-EXPRESS DEMO");
+app.listen(port, function () {
+  console.log("RR DEMO ONLINE");
 });

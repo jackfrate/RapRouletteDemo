@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>User DashBoard</title>
+</head>
+
+<body>
+    <h1>
+        <%= username %>'s Stats
+    </h1>
+    <div class="user_stats">
+        <br>
+        <ul>
+            <li>
+                wins:
+                <%= wins %>
+            </li>
+            <li>
+                losses:
+                <%= losses %>
+            </li>
+            <li>
+                win/loss ratio :
+                <%= wl_ratio %>
+            </li>
+
+        </ul>
+
+    </div>
+
+    <div class="battle_button">
+        <form method="post" action="/battle/search">
+            <br>
+            <input type="submit" value="Find Opponent">
+        </form>
+    </div>
+
+    <div class="spectate_button">
+        <form method="post" action="/spectate/list">
+            <br>
+            <input type="submit" value="Spectate List">
+        </form>
+    </div>
+
+    <div class="spectate_button">
+        <form method="post" action="/spectate">
+            <br>
+            <input type="submit" value="Spectate Random Match">
+        </form>
+    </div>
+</body>
+
+</html>
