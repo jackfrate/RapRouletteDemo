@@ -33,18 +33,19 @@ mainRouter.get("/", (req, res, next) => {
         // expose the user to the template
         res.locals.user = user;
 
-        // get the variabls for the dashboard page
-        var username = req.session.user.username;
-        var wins = req.session.user.wins;
-        var losses = req.session.user.losses;
-        var wl_ratio = (wins / losses); // win loss ratio
-        // make wl ratio show up as 0 if NaN
+        // object for the user
+        let newUser = {
+          username: req.session.user.username,
+          wins: req.session.user.wins,
+          losses: req.session.user.losses,
+          wl_ratio: (wins / losses)
+        }
         // render the dashboard page
         res.render('dashboard', {
-          username: username,
-          wins: wins,
-          losses: losses,
-          wl_ratio: wl_ratio
+          username: newUser.username,
+          wins: newUser.wins,
+          losses: newUser.losses,
+          wl_ratio: newUser.wl_ratio
         });
       }
     });
@@ -124,18 +125,19 @@ mainRouter.get('/dashboard', function (req, res) {
         // expose the user to the template
         res.locals.user = user;
 
-        // get the variabls for the dashboard page
-        var username = req.session.user.username;
-        var wins = req.session.user.wins;
-        var losses = req.session.user.losses;
-        var wl_ratio = (wins / losses); // win loss ratio
-
+        // object for the user
+        let newUser = {
+          username: req.session.user.username,
+          wins: req.session.user.wins,
+          losses: req.session.user.losses,
+          wl_ratio: (wins / losses)
+        }
         // render the dashboard page
         res.render('dashboard', {
-          username: username,
-          wins: wins,
-          losses: losses,
-          wl_ratio: wl_ratio
+          username: newUser.username,
+          wins: newUser.wins,
+          losses: newUser.losses,
+          wl_ratio: newUser.wl_ratio
         });
       }
     });
