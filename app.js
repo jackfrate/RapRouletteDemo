@@ -29,6 +29,10 @@ app.use(bodyParser.json());
 const mainRouter = require("./routes/mainRouter");
 app.use("/", mainRouter);
 
+// routers for the api
+// const apiMainRouter = require("./routes/apiMainRouter");
+// app.use("/api", apiMainRouter);
+
 // listen
 app.listen(port, function () {
   console.log("RR DEMO ONLINE");

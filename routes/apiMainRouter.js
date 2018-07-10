@@ -70,6 +70,7 @@ mainRouter.post("/sign_up", (req, res, next) => {
 });
 
 // get route for the sign in page
+// SHOULD NOT NEED FOR THE API
 mainRouter.get("/sign_in", (req, res, next) => {
   res.render("sign_in");
 });
@@ -121,8 +122,8 @@ mainRouter.get('/dashboard', function (req, res) {
     });
   } else {
     // TODO: make this return an error and redirect to the FRONTEND sign in
-    res.redirect('/sign_in');
+    res.status(400).send('invalid login');
   }
 });
 
-module.exports = mainRouter;
+module.exports = apiMainRouter;
