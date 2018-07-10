@@ -13,6 +13,8 @@ mainRouter.use(session({
   activeDuration: 5 * 60 * 1000,
 }));
 
+// function for creating variables on a dashboard
+
 // main root for homepage
 mainRouter.get("/", (req, res, next) => {
   // TODO: if session take user to dashboard, if not make them sign in/sign up
@@ -36,7 +38,7 @@ mainRouter.get("/", (req, res, next) => {
         var wins = req.session.user.wins;
         var losses = req.session.user.losses;
         var wl_ratio = (wins / losses); // win loss ratio
-
+        // make wl ratio show up as 0 if NaN
         // render the dashboard page
         res.render('dashboard', {
           username: username,
@@ -78,7 +80,7 @@ mainRouter.post("/sign_up", (req, res, next) => {
     })
     .catch(err => {
       res.render("sign_up_error");
-      res.status(400).send("unable to save to database!");
+      //res.status(400).send("unable to save to database!");
 
     });
 });

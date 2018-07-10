@@ -1,8 +1,12 @@
-// server.js
-
+// app.js
 const express = require("express");
 const app = express();
 const port = 3000;
+
+// for keys and tokens
+const fs = require("fs");
+// Define to JSON type
+var keys = JSON.parse(fs.readFileSync("keys.json"));
 
 // express stuff with some view engine in there
 app.use(express.static("public"));
@@ -13,8 +17,7 @@ const userModel = require("./model/userModel");
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
 mongoose.connect(
-  "mongodb://rr:ReallyGoodDemoPassword1@ds018248.mlab.com:18248/rr-demo",
-  { useNewUrlParser: true }
+  keys.mongo, { useNewUrlParser: true }
 );
 
 // body parser
