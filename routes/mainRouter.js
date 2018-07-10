@@ -13,8 +13,6 @@ mainRouter.use(session({
   activeDuration: 5 * 60 * 1000,
 }));
 
-// function for creating variables on a dashboard
-
 // main root for homepage
 mainRouter.get("/", (req, res, next) => {
   // TODO: if session take user to dashboard, if not make them sign in/sign up
@@ -30,23 +28,7 @@ mainRouter.get("/", (req, res, next) => {
         req.session.reset();
         res.redirect('/index');
       } else {
-        // expose the user to the template
-        res.locals.user = user;
-
-        // object for the user
-        let newUser = {
-          username: req.session.user.username,
-          wins: req.session.user.wins,
-          losses: req.session.user.losses,
-          wl_ratio: (wins / losses)
-        }
-        // render the dashboard page
-        res.render('dashboard', {
-          username: newUser.username,
-          wins: newUser.wins,
-          losses: newUser.losses,
-          wl_ratio: newUser.wl_ratio
-        });
+        res.redirect('/dashboard');
       }
     });
   } else {
@@ -130,7 +112,7 @@ mainRouter.get('/dashboard', function (req, res) {
           username: req.session.user.username,
           wins: req.session.user.wins,
           losses: req.session.user.losses,
-          wl_ratio: (wins / losses)
+          wl_ratio: (this.wins / this.losses)
         }
         // render the dashboard page
         res.render('dashboard', {

@@ -13,7 +13,7 @@ app.use(express.static("public"));
 app.set("view engine", "ejs");
 
 // mongoose stuff
-const userModel = require("./model/userModel");
+// const userModel = require("./model/userModel");
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
 mongoose.connect(
