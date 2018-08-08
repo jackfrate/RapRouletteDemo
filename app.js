@@ -36,4 +36,5 @@ app.use("/", mainRouter);
 // listen
 app.listen(port, function () {
   console.log("RR DEMO ONLINE");
+  console.log(keys);
 });
